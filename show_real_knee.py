@@ -54,12 +54,14 @@ def show_dataset(dataset, key_name):
             plt.title(f"{key_name} (slice {mid})")
             plt.show()
 
+def see_real_knee_mri_with_noise():
+    with h5py.File("real_Knee_MRI_has_noise.h5", "r") as f:
+        for key in f.keys():
+            item = f[key]
+            if isinstance(item, h5py.Dataset) and item.shape != ():  # scalar check
+                show_dataset(item, key)
+            else:
+                print(f"{key} is not a sliceable dataset, skipping...")
 
-with h5py.File("file1000022.h5", "r") as f:
-    for key in f.keys():
-        item = f[key]
-        if isinstance(item, h5py.Dataset) and item.shape != ():  # scalar check
-            show_dataset(item, key)
-        else:
-            print(f"{key} is not a sliceable dataset, skipping...")
+see_real_knee_mri_with_noise()
 
